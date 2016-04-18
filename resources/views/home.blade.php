@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>NBA Sports Ad Statistics</title>
 
@@ -38,11 +39,12 @@
      <form method="POST" action="/stats" >  {{ csrf_field() }}
       <fieldset class="form-group">
         <label for="sel1">Choose a Team:</label>
-        <select class="form-control" id="sel1" name="team">
-        <option> ALL TEAMS </option>
-        @foreach ($teams as $team)
-          <option value="{{ $team->team_id }}">{{ $team->city_and_name }}</option>
-        @endforeach
+        <select class="form-control" id="sel1" name="team" onchange="changeTeam(this);">
+          <option value=""> Select a Team </option>
+          <option value="ALL TEAMS"> ALL TEAMS </option>
+          @foreach ($teams as $team)
+            <option value="{{ $team->team_id }}">{{ $team->city_and_name }}</option>
+          @endforeach
         </select>
       </fieldset>
       <fieldset class="form-group">
@@ -53,11 +55,12 @@
       </fieldset>
       <fieldset class="form-group">
         <label for="sel1">Choose a Game:</label>
-        <select class="form-control" id="sel1" name="game">
-        <option value="ALL GAMES"> ALL GAMES </option>
-         @foreach ($gameids as $game)
-            <option value="{{ $game->game_id }}">{{ $game->start_datetime }} {{ $game->game_id }}</option>
-          @endforeach
+        <select class="form-control" id="sel" name="game" onchange="">
+          <option value=""> Select a Team </option>
+          <option value="ALL GAMES"> ALL GAMES </option>
+           <!--@foreach ($games as $game)
+              <option value="{{ $game->game_id }}">{{ $game->start_datetime }} {{ $game->game_id }}</option>
+            @endforeach -->
         </select>
       </fieldset>
       <button type="submit" class="btn btn-primary">Go</button>
@@ -67,6 +70,38 @@
       <br>
       
     </div>
+
+    <script type="text/javascript">
+
+    function changeTeam(team) {
+      var team = team.value;
+
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+      if(team != "") {
+        // AJAX request
+        var formData = {team: team, _token: CSRF_TOKEN}; //Array 
+ 
+        $.ajax({
+            url : "/updateData",
+            type: "POST",
+            dataType:"json",
+            data : formData,
+            success: function(data, textStatus, jqXHR)
+            {
+                //data - response from server
+                // You recieve ALL GAMES or the games that are associated with that team 
+                console.log(data);
+            },
+            error: function (e)
+            {
+              console.log(e.responseText);
+            }
+        });
+      }
+    }
+
+    </script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

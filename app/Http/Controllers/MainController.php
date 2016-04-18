@@ -24,10 +24,10 @@ class MainController extends Controller
         $teams = DB::table('TEAM')->select('team_id', 'city_and_name')->orderBy('city_and_name', 'asc')->get();
         $seasons = "Spring 2016";
 
-        $gameids = DB::table('GAME')->select('game_id', 'start_datetime', 'away_team', 'home_team')->orderBy('game_id', 'asc')->get();
+       // $games = DB::table('GAME')->select('game_id', 'start_datetime', 'away_team', 'home_team')->orderBy('game_id', 'asc')->get();
 
 
-        return view('home')->withTeams($teams)->withSeasons($seasons)->withGameids($gameids);
+        return view('home')->withTeams($teams)->withSeasons($seasons);
     }
 
 
@@ -75,7 +75,16 @@ class MainController extends Controller
     // Update the home page drop down options
     public function updateData(Request $request) {
     	$team = $request->team;
-    	$game = $request->game;
+
+    	if($team == "ALL GAMES") {
+    		return Response::format
+    	}
+    	else {
+    		$games = DB::select( DB::raw( "SELECT t1.city_and_name, t2.city_and_name, g.game_id, g.start_datetime
+			FROM GAME as g, TEAM as t1, TEAM as t2
+			WHERE t1.team_id = g.away_team and t2.team_id = g.home_team and (t1.team_id=$team OR t2.team_id=$team)"));
+    	}
+
     }
 
 }
