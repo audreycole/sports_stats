@@ -92,12 +92,28 @@
                 //data - response from server
                 // You recieve ALL GAMES or the games that are associated with that team 
                 console.log(data);
+                if(data != "ALL GAMES") {
+                  var $el = $("#sel");
+                  $el.empty();
+                  $.each(data, function(game) {
+                    $el.append($("<option></option>")
+                       .attr("value", game["game_id"]).text(game["start_datetime"] + " home: " + game["team1"] + " away: " + game["team2"] ));
+                  });
+                }
+                else {
+                  $('#sel').empty().append('<option value=""> Select a Team </option>
+                                          <option value="ALL GAMES"> ALL GAMES </option>');
+                }
             },
             error: function (e)
             {
               console.log(e.responseText);
             }
         });
+      }
+      else {
+        $('#sel').empty().append('<option value=""> Select a Team </option>
+          <option value="ALL GAMES"> ALL GAMES </option>');
       }
     }
 
