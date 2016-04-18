@@ -82,7 +82,7 @@ class MainController extends Controller
     		]);
     	}
     	else {
-    		$games = DB::select( DB::raw( "SELECT t1.city_and_name, t2.city_and_name, g.game_id, g.start_datetime
+    		$games = DB::select( DB::raw( "SELECT t1.city_and_name AS team1, t2.city_and_name AS team2, g.game_id AS game_id, g.start_datetime AS start_datetime
 			FROM GAME as g, TEAM as t1, TEAM as t2
 			WHERE t1.team_id = g.away_team and t2.team_id = g.home_team and (t1.team_id=$team OR t2.team_id=$team)"));
 
