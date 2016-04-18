@@ -34,13 +34,21 @@
       <p>Welcome to your source of twitter stats during the NBA 2016!</p>
 
       <hr>
+      @if ($gametime)
 
-      <p> You chose the team {{ $team }}, the season {{ $season }}, and the game {{ $game }} with date {{ $firstgame->month }}-{{ $firstgame->day }} and time {{ $firstgame->hour }}:{{ $firstgame->minutes }}. </p>
+      <p> You chose the team {{ $team }}, the season {{ $season }}, and the game {{ $game }} with date {{ $gametime->month }}-{{ $gametime->day }} and time {{ $gametime->hour }}:{{ $gametime->minutes }}. </p>
 
-      @foreach ($time as $t)
-        <li>Time: {{ $t->hour }}:{{ $t->minutes }} Popularity: {{ $t->popularity }}</li>
-      @endforeach
+      @else 
 
+      <p> You chose to calculate the best time to tweet before any game during the 2016 season </p>
+
+      @endif 
+
+      @if ($tweettime)
+        <h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }}</h3>
+      @else 
+        <h3>Time: {{ $avghours }}:{{ $avgminutes }} </h3>
+      @endif
       <br>
 
       
