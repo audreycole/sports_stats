@@ -73,15 +73,15 @@
 
     <script type="text/javascript">
 
-    function changeTeam(team) {
+     function changeTeam(team) {
       var team = team.value;
 
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
       if(team != "") {
         // AJAX request
-        var formData = {team: team, _token: CSRF_TOKEN}; //Array 
- 
+        var formData = {team: team, _token: CSRF_TOKEN}; 
+
         $.ajax({
             url : "/updateData",
             type: "POST",
@@ -90,19 +90,21 @@
             success: function(data, textStatus, jqXHR)
             {
                 //data - response from server
-                // You recieve ALL GAMES or the games that are associated with that team 
+                // You recieve ALL GAMES or the games that are associated with that team
                 console.log(data);
-                if(data != "ALL GAMES") {
+                if(data['data'] != "ALL GAMES") {
+
+
                   var $el = $("#sel");
                   $el.empty();
-                  $.each(data, function(game) {
-                    $el.append($("<option></option>")
-                       .attr("value", game["game_id"]).text(game["start_datetime"] + " home: " + game["team1"] + " away: " + game["team2"] ));
-                  });
+
+                  for(var i = 0; i < data['data'].length; i++) {
+                    $el.append($("<option></option").attr("value", data['data'][i]['game_id']).text("TIME: " + data['data'][i]['start_datetime'] + "    HOME: " + data['data'][i]['team1'] + "    AWAY: " + data['data'][i]['team2'] ));
+                  }
+
                 }
                 else {
-                  $('#sel').empty().append('<option value=""> Select a Team </option>
-                                          <option value="ALL GAMES"> ALL GAMES </option>');
+                  $('#sel').empty().append('<option value=""> Select a Team </option><option value="ALL GAMES"> ALL GAMES </option>');
                 }
             },
             error: function (e)
@@ -112,10 +114,10 @@
         });
       }
       else {
-        $('#sel').empty().append('<option value=""> Select a Team </option>
-          <option value="ALL GAMES"> ALL GAMES </option>');
+        $('#sel').empty().append('<option value="">Select a Team</option><option value="ALL GAMES">ALL GAMES</option>');
       }
     }
+
 
     </script>
 
