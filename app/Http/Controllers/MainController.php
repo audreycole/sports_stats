@@ -35,30 +35,32 @@ class MainController extends Controller
         $team = $request->team;
         $season = $request->season;
         $game = $request->game;
-		
-		if($game != "ALL GAMES") {
 
-			/* Get the selected game */
-			$gametimes = DB::select( DB::raw( "SELECT HOUR(start_datetime) as hour,
-			DAY(start_datetime) as day,
-			MINUTE(start_datetime) as minutes,
-			MONTH(start_datetime) as month
-			FROM GAME
-			WHERE game_id = $game"));
+        if($game != "ALL GAMES") {
 
-		    $gametime = $gametimes[0];
+                /* Get the selected game */
+                $gametimes = DB::select( DB::raw( "SELECT HOUR(start_datetime) as hour,
+                DAY(start_datetime) as day,
+                MINUTE(start_datetime) as minutes,
+                MONTH(start_datetime) as month
+                FROM GAME
+                WHERE game_id = $game"));
 
-		    /* Get the most popular tweet within a 5 hour range of our game */ 
-			$tweettime = DB::select( DB::raw("SELECT HOUR(t.created_at) as hour,
-			MINUTE(t.created_at) as minutes,
-			(retweet_count + favorite_count) AS popularity
-			FROM TWEET as t
-			WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
-			DAY(t.created_at) = $gametime->day
-			ORDER BY (retweet_count + favorite_count) DESC
-			LIMIT 1"));
+            $gametime = $gametimes[0];
 
-			return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withTweettime($tweettime)->withGametime($gametime);
+            /* Get the most popular tweet within a 5 hour range of our game */
+                $tweettime = DB::select( DB::raw("SELECT HOUR(t.created_at) as hour,
+                MINUTE(t.created_at) as minutes,
+                (retweet_count + favorite_count) AS popularity
+                FROM TWEET as t
+                WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
+                DAY(t.created_at) = $gametime->day
+                ORDER BY (retweet_count + favorite_count) DESC
+                LIMIT 1"));
+
+
+                return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withTweettime($tweettime[0])->withGametime($gametime);
+
 
 		}
 		else {
@@ -68,33 +70,35 @@ class MainController extends Controller
 			*/
 			/* Get all the game times */
 			$gametimes = DB::select( DB::raw( "SELECT HOUR(start_datetime) as hour,
-			DAY(start_datetime) as day,
-			MINUTE(start_datetime) as minutes,
-			MONTH(start_datetime) as month
-			FROM GAME "));
+                        DAY(start_datetime) as day,
+                        MINUTE(start_datetime) as minutes,
+                        MONTH(start_datetime) as month
+                        FROM GAME "));
 
-			var hours = 0;
-			var minutes = 0;
-			for(var i = 0; i < $gametimes.length; i++) {
-				/* Get the most popular tweet within a 5 hour range of our game */ 
-				$tweettime = DB::select( DB::raw("SELECT HOUR(t.created_at) as hour,
-				MINUTE(t.created_at) as minutes,
-				(retweet_count + favorite_count) AS popularity
-				FROM TWEET as t
-				WHERE ($gametimes[i]->hour - HOUR(t.created_at)) <= 5 and
-				DAY(t.created_at) = $gametimes[i]->day
-				ORDER BY (retweet_count + favorite_count) DESC
-				LIMIT 1"));
+                        $hours = 0;
+                        $minutes = 0;
 
-				hours += $tweettime->hour;
-				minutes += $tweettime->minutes;
-			}
+                        foreach($gametimes as $gametime) {
+                                /* Get the most popular tweet within a 5 hour range of our game */
 
-			var avghours = hours / $gametimes.length;
-			var avgminutes = minutes / $gametimes.length; 
-		}
+                                $tweettime = DB::select( DB::raw("SELECT HOUR(t.created_at) as hour,
+                                MINUTE(t.created_at) as minutes,
+                                (retweet_count + favorite_count) AS popularity
+                                FROM TWEET as t
+                                WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
+                                DAY(t.created_at) = $gametime->day
+                                ORDER BY (retweet_count + favorite_count) DESC
+                                LIMIT 1"));
 
-        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes);
+                                $hours += $tweettime[0]->hour;
+                                $minutes += $tweettime[0]->minutes;
+                        }
+
+                        $avghours = $hours / count($gametimes);
+                        $avgminutes = $minutes / count($gametimes);
+                }
+
+        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
     }
 
     // Update the home page drop down options

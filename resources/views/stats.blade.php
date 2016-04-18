@@ -34,7 +34,7 @@
       <p>Welcome to your source of twitter stats during the NBA 2016!</p>
 
       <hr>
-      @if ($gametime)
+      @if ($gametime != "")
 
       <p> You chose the team {{ $team }}, the season {{ $season }}, and the game {{ $game }} with date {{ $gametime->month }}-{{ $gametime->day }} and time {{ $gametime->hour }}:{{ $gametime->minutes }}. </p>
 
@@ -44,7 +44,7 @@
 
       @endif 
 
-      @if ($tweettime)
+      @if ($tweettime != "")
         <h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }}</h3>
       @else 
         <h3>Time: {{ $avghours }}:{{ $avgminutes }} </h3>
