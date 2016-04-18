@@ -35,32 +35,29 @@
 
       <hr>
         
-      <form method="POST" action="/stats" >  {{ csrf_field() }}
+     <form method="POST" action="/stats" >  {{ csrf_field() }}
       <fieldset class="form-group">
         <label for="sel1">Choose a Team:</label>
         <select class="form-control" id="sel1" name="team">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+        <option> ALL TEAMS </option>
+        @foreach ($teams as $team)
+          <option value="{{ $team->team_id }}">{{ $team->city_and_name }}</option>
+        @endforeach
         </select>
       </fieldset>
       <fieldset class="form-group">
          <label for="sel1">Choose a Season:</label>
           <select class="form-control" id="sel1" name="season">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+            <option>Spring 2016</option>
           </select>
       </fieldset>
       <fieldset class="form-group">
         <label for="sel1">Choose a Game:</label>
         <select class="form-control" id="sel1" name="game">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
+        <option value="ALL GAMES"> ALL GAMES </option>
+         @foreach ($gameids as $game)
+            <option value="{{ $game->game_id }}">{{ $game->start_datetime }} {{ $game->game_id }}</option>
+          @endforeach
         </select>
       </fieldset>
       <button type="submit" class="btn btn-primary">Go</button>

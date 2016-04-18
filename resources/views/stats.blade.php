@@ -30,14 +30,19 @@
         </ul>
       </nav>
     
-      <h1>NBA Twitter Statistics</h1>
-      <p>Welcome to your source of twitter stats during the NBA 2016!</p> 
+     <h1>NBA Twitter Statistics</h1>
+      <p>Welcome to your source of twitter stats during the NBA 2016!</p>
 
       <hr>
-        
-      <p> You chose the team {{ $team }}, the season {{ $season }}, and the game {{ $game }} </p>
+
+      <p> You chose the team {{ $team }}, the season {{ $season }}, and the game {{ $game }} with date {{ $firstgame->month }}-{{ $firstgame->day }} and time {{ $firstgame->hour }}:{{ $firstgame->minutes }}. </p>
+
+      @foreach ($time as $t)
+        <li>Time: {{ $t->hour }}:{{ $t->minutes }} Popularity: {{ $t->popularity }}</li>
+      @endforeach
 
       <br>
+
       
     </div>
 

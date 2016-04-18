@@ -15,3 +15,5 @@
 Route::get('/', 'MainController@home');
 
 Route::post('/stats', 'MainController@getStats');
+
+Route::post('/updateData', 'MainController@updateData');
