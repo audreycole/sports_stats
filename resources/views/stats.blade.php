@@ -45,7 +45,7 @@
       @endif 
 
       @if ($tweettime != "")
-        <h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }} Hours:Minutes Before Game: {{ $tweettime->hoursbefore }} : {{ $tweettime->minutesbefore }}</h3>
+        <h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }} Hours:Minutes Before Game: {{ $hoursbefore }} : {{ $minutesbefore }}</h3>
       @else 
         <h3>Hours:Minutes Before Game: {{ $avghours }}:{{ $avgminutes }} </h3>
       @endif
