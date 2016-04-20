@@ -60,8 +60,8 @@ class MainController extends Controller
                 ORDER BY (retweet_count + favorite_count) DESC
                 LIMIT 1"));
 
-                $hoursbefore = intval(tweettime[0]->minutes_before / 60);
-                $minutesbefore = fmod(tweettime[0]->minutes_before, 60);
+                $hoursbefore = intval($tweettime[0]->minutes_before / 60);
+                $minutesbefore = fmod($tweettime[0]->minutes_before, 60);
 
 
                 return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withTweettime($tweettime[0])->withGametime($gametime)->withHoursbefore($hoursbefore)->withMinutesbefore($minutesbefore);
@@ -97,8 +97,8 @@ class MainController extends Controller
                                 ORDER BY (retweet_count + favorite_count) DESC
                                 LIMIT 1"));
 
-                                $hoursbefore += intval(tweettime[0]->minutes_before / 60);
-                                $minutesbefore += fmod(tweettime[0]->minutes_before, 60);
+                                $hoursbefore += intval($tweettime[0]->minutes_before / 60);
+                                $minutesbefore += fmod($tweettime[0]->minutes_before, 60);
                         }
 
                         $avghours = $hoursbefore / count($gametimes);
