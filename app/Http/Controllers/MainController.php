@@ -87,7 +87,7 @@ class MainController extends Controller
                                 /* Get the most popular tweet within a 5 hour range of our game */
 
                                 $tweettime = DB::select( DB::raw("SELECT 
-                                60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) AS minutes_before
+                                60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) AS minutes_before,
                                 HOUR(t.created_at) as hour,
                                 MINUTE(t.created_at) as minutes,
                                 (retweet_count + favorite_count) AS popularity
