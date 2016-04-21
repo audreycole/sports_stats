@@ -56,6 +56,7 @@ class MainController extends Controller
                 (retweet_count + favorite_count) AS popularity
                 FROM TWEET as t
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
+                ($gametime->hour - HOUR(t.created_at)) >= 0 and
                 DAY(t.created_at) = $gametime->day
                 ORDER BY (retweet_count + favorite_count) DESC
                 LIMIT 1"));
@@ -83,7 +84,7 @@ class MainController extends Controller
                         $hoursbefore = 0;
                         $minutesbefore = 0;
 
-                        $timeBefore = 0;
+                        
 
                         foreach($gametimes as $gametime) {
                                 /* Get the most popular tweet within a 5 hour range of our game */
@@ -95,21 +96,22 @@ class MainController extends Controller
                                 (retweet_count + favorite_count) AS popularity
                                 FROM TWEET as t
                                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
+                                ($gametime->hour - HOUR(t.created_at)) >= 0 and
                                 DAY(t.created_at) = $gametime->day
                                 ORDER BY (retweet_count + favorite_count) DESC
                                 LIMIT 1"));
 
-                                $timeBefore += $tweettime[0]->minutes_before;
+                           
 
-                                /*$hoursbefore += intval($tweettime[0]->minutes_before / 60);
-                                $minutesbefore += fmod($tweettime[0]->minutes_before, 60);*/
+                                $hoursbefore += intval($tweettime[0]->minutes_before / 60);
+                                $minutesbefore += fmod($tweettime[0]->minutes_before, 60);
                         }
 
-                        //$avghours = $hoursbefore / count($gametimes);
-                        $avgminutes = $timeBefore / count($gametimes);
+                        $avghours = $hoursbefore / count($gametimes);
+                        $avgminutes = $minutesbefore / count($gametimes);
                 }
 
-        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours(0)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
+        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
     }
 
     // Update the home page drop down options
