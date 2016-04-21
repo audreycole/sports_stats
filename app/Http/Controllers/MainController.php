@@ -81,10 +81,7 @@ class MainController extends Controller
                         MONTH(start_datetime) as month
                         FROM GAME "));
 
-                        $hoursbefore = 0;
                         $minutesbefore = 0;
-
-                        
 
                         foreach($gametimes as $gametime) {
                                 /* Get the most popular tweet within a 5 hour range of our game */
@@ -101,14 +98,15 @@ class MainController extends Controller
                                 ORDER BY (retweet_count + favorite_count) DESC
                                 LIMIT 1"));
 
-                           
+                               
+                                $minutesbefore += $tweettime[0]->minutesbefore;
 
-                                $hoursbefore += intval($tweettime[0]->minutes_before / 60);
-                                $minutesbefore += fmod($tweettime[0]->minutes_before, 60);
                         }
 
-                        $avghours = $hoursbefore / count($gametimes);
-                        $avgminutes = $minutesbefore / count($gametimes);
+                        $average = $minutesbefore / count($gametimes);
+
+                        $avghours = intval($average / 60);
+                        $avgminutes = fmod($average, 60);
                 }
 
         return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
