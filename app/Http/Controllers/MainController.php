@@ -99,7 +99,7 @@ class MainController extends Controller
                                 LIMIT 1"));
 
                                
-                                $minutesbefore += $tweettime[0]->minutesbefore;
+                                $minutesbefore += $tweettime[0]->minutes_before;
 
                         }
 
