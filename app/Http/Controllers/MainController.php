@@ -83,6 +83,8 @@ class MainController extends Controller
                         $hoursbefore = 0;
                         $minutesbefore = 0;
 
+                        $timeBefore = 0;
+
                         foreach($gametimes as $gametime) {
                                 /* Get the most popular tweet within a 5 hour range of our game */
 
@@ -97,15 +99,17 @@ class MainController extends Controller
                                 ORDER BY (retweet_count + favorite_count) DESC
                                 LIMIT 1"));
 
-                                $hoursbefore += intval($tweettime[0]->minutes_before / 60);
-                                $minutesbefore += fmod($tweettime[0]->minutes_before, 60);
+                                $timeBefore += $tweettime[0]->minutes_before;
+
+                                /*$hoursbefore += intval($tweettime[0]->minutes_before / 60);
+                                $minutesbefore += fmod($tweettime[0]->minutes_before, 60);*/
                         }
 
-                        $avghours = $hoursbefore / count($gametimes);
-                        $avgminutes = $minutesbefore / count($gametimes);
+                        //$avghours = $hoursbefore / count($gametimes);
+                        $avgminutes = $timeBefore / count($gametimes);
                 }
 
-        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
+        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours(0)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
     }
 
     // Update the home page drop down options
