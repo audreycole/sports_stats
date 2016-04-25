@@ -79,7 +79,9 @@ class MainController extends Controller
                         DAY(start_datetime) as day,
                         MINUTE(start_datetime) as minutes,
                         MONTH(start_datetime) as month
-                        FROM GAME "));
+                        FROM GAME 
+                        LIMIT 10"));
+
 
                         $minutesbefore = 0;
 
