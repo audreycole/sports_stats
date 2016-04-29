@@ -62,14 +62,6 @@
         </select>
       </fieldset>
 
-      <fieldset class="form-group">
-        <label for="sel1">Choose a Game:</label>
-        <select class="form-control" id="sel" name="game" onchange="">
-          <option value=""> Select a Game </option>
-          <option value="ALL GAMES"> ALL GAMES </option>
-        </select>
-      </fieldset>
-
       <button type="submit" class="btn btn-primary">Go</button>
     </form>
 
