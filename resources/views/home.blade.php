@@ -36,7 +36,8 @@
 
       <hr>
         
-     <form method="POST" action="/stats" >  {{ csrf_field() }}
+    <h2> Get Highest Rated Tweet Before A Game(s) </h2>
+     <form method="POST" action="/ratings" >  {{ csrf_field() }}
       <fieldset class="form-group">
         <label for="sel1">Choose a Team:</label>
         <select class="form-control" id="sel1" name="team" onchange="changeTeam(this);">
@@ -56,15 +57,34 @@
       <fieldset class="form-group">
         <label for="sel1">Choose a Game:</label>
         <select class="form-control" id="sel" name="game" onchange="">
-          <option value=""> Select a Team </option>
+          <option value=""> Select a Game </option>
           <option value="ALL GAMES"> ALL GAMES </option>
-           <!--@foreach ($games as $game)
-              <option value="{{ $game->game_id }}">{{ $game->start_datetime }} {{ $game->game_id }}</option>
-            @endforeach -->
+        </select>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <label for="sel1">Choose a Game:</label>
+        <select class="form-control" id="sel" name="game" onchange="">
+          <option value=""> Select a Game </option>
+          <option value="ALL GAMES"> ALL GAMES </option>
+        </select>
+      </fieldset>
+
+      <button type="submit" class="btn btn-primary">Go</button>
+    </form>
+
+     <h2> Get All Games, or Teams </h2>
+     <form method="POST" action="/stats" >  {{ csrf_field() }}
+      <fieldset class="form-group">
+        <label for="sel1">Choose Tweets, Games, or Teams:</label>
+        <select class="form-control" id="sel1" name="option">
+          <option value="tweets"> Tweets </option>
+          <option value="games"> Games </option>
+          <option value="teams"> Teams </option>
         </select>
       </fieldset>
       <button type="submit" class="btn btn-primary">Go</button>
-      </form>
+    </form>
 
 
       <br>

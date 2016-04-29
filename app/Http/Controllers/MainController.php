@@ -30,7 +30,7 @@ class MainController extends Controller
 
 
     // Get the statistics for those inputs
-    public function getStats(Request $request)
+    public function ratings(Request $request)
     {
         $team = $request->team;
         $season = $request->season;
@@ -111,7 +111,25 @@ class MainController extends Controller
                         $avgminutes = fmod($average, 60);
                 }
 
-        return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
+        return view('ratings')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
+    }
+
+    public function stats(Request $request) {
+
+    	$option = $request->option;
+
+    	return view('ratings')->withOption($option)
+
+    	if ($option == 'tweets') {
+
+    	}
+    	else if ($option == 'games') {
+
+    	}
+    	else { // $option == 'teams'
+
+    	}
+
     }
 
     // Update the home page drop down options
