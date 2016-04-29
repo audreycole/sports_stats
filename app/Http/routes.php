@@ -14,7 +14,7 @@
 // Get the home page with search options
 Route::get('/', 'MainController@home');
 
-Route::post('/rating', 'MainController@ratings');
+Route::post('/ratings', 'MainController@ratings');
 
 Route::post('/stats', 'MainController@stats');
 
