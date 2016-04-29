@@ -118,9 +118,9 @@ class MainController extends Controller
 
     	$option = $request->option;
 
-    	return view('ratings')->withOption($option)
+    	return view('ratings')->withOption($option);
 
-    	if ($option == 'tweets') {
+    	/*if ($option == 'tweets') {
 
     	}
     	else if ($option == 'games') {
@@ -128,8 +128,8 @@ class MainController extends Controller
     	}
     	else { // $option == 'teams'
 
-    	}
-
+    	}*/
+		
     }
 
     // Update the home page drop down options
