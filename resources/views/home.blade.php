@@ -64,26 +64,25 @@
 
       <fieldset class="form-group">
         <div class="checkbox">
-          <label><input type="checkbox" name="tweets" value="tweets">Show all tweets for this game</label>
+          <label><input type="checkbox" name="tweets" value="tweets">Show top 100 tweets for this game</label>
         </div>
       </fieldset>
 
       <button type="submit" class="btn btn-primary">Go</button>
     </form>
 
-     <h2> Get All Games, Teams, or highest rated Tweets </h2>
+     <h2> Get All Games, Teams, or Top 100 Tweets </h2>
      <form method="POST" action="/stats" >  {{ csrf_field() }}
       <fieldset class="form-group">
         <label for="sel1">Choose Tweets, Games, or Teams:</label>
         <select class="form-control" id="sel1" name="option">
-          <option value="tweets"> Tweets </option>
-          <option value="games"> Games </option>
-          <option value="teams"> Teams </option>
+          <option value="tweets"> Top 100 Tweets </option>
+          <option value="games"> All Games </option>
+          <option value="teams"> All Teams </option>
         </select>
       </fieldset>
       <button type="submit" class="btn btn-primary">Go</button>
     </form>
-
 
       <br>
       
