@@ -62,10 +62,16 @@
         </select>
       </fieldset>
 
+      <fieldset class="form-group">
+        <div class="checkbox">
+          <label><input type="checkbox" name="tweets" value="tweets">Show all tweets for this game</label>
+        </div>
+      </fieldset>
+
       <button type="submit" class="btn btn-primary">Go</button>
     </form>
 
-     <h2> Get All Games, or Teams </h2>
+     <h2> Get All Games, Teams, or highest rated Tweets </h2>
      <form method="POST" action="/stats" >  {{ csrf_field() }}
       <fieldset class="form-group">
         <label for="sel1">Choose Tweets, Games, or Teams:</label>

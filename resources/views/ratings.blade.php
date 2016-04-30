@@ -51,6 +51,15 @@
       @endif
       <br>
 
+      @if ($toptweets != "")
+
+      @foreach ($toptweets as $tweet)
+
+      <ul class="list-group">
+        <li class="list-group-item">{{ $tweet->tweet_text }} Popularity: {{ $tweet->popularity }}</li>
+      </ul>
+
+      @endif
       
     </div>
 

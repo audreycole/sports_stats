@@ -53,7 +53,8 @@ class MainController extends Controller
                 60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) AS minutes_before, 
                 HOUR(t.created_at) as hour,
                 MINUTE(t.created_at) as minutes,
-                (retweet_count + favorite_count) AS popularity
+                (retweet_count + favorite_count) AS popularity, 
+                tweet_text,
                 FROM TWEET as t
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
@@ -63,11 +64,39 @@ class MainController extends Controller
 
                 $hoursbefore = intval($tweettime[0]->minutes_before / 60);
                 $minutesbefore = fmod($tweettime[0]->minutes_before, 60);
+                $tweettext = $tweettime[0]->tweet_text;
+                $toptweets = "";
 
+                // Get the top 100 tweets for that game
+                if($request->tweets) {
+                	$toptweets = DB::select( DB::raw("SELECT 
+	                (60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)))/60 AS hours_before, 
+	                (60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at))) % 60 AS minutes_before,
+	                HOUR(t.created_at) as hour,
+	                MINUTE(t.created_at) as minutes,
+	                (retweet_count + favorite_count) AS popularity, 
+	                tweet_text
+	                FROM TWEET as t
+	                WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
+	                ($gametime->hour - HOUR(t.created_at)) >= 0 and
+	                DAY(t.created_at) = $gametime->day
+	                ORDER BY (retweet_count + favorite_count) DESC
+	                LIMIT 100"));
 
-                return view('stats')->withTeam($team)->withSeason($season)->withGame($game)->withTweettime($tweettime[0])->withGametime($gametime)->withHoursbefore($hoursbefore)->withMinutesbefore($minutesbefore);
+                
+                }
 
-
+                return view('ratings')
+                ->withTeam($team)
+                ->withSeason($season)
+                ->withGame($game)
+                ->withTweettime($tweettime[0])
+                ->withGametime($gametime)
+                ->withHoursbefore($hoursbefore)
+                ->withMinutesbefore($minutesbefore)
+                
+                ->withTweettext($tweettext);
+                ->withToptweets($toptweets);
 		}
 		else {
 
@@ -92,7 +121,8 @@ class MainController extends Controller
                                 60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) AS minutes_before,
                                 HOUR(t.created_at) as hour,
                                 MINUTE(t.created_at) as minutes,
-                                (retweet_count + favorite_count) AS popularity
+                                (retweet_count + favorite_count) AS popularity, 
+                                tweet_text
                                 FROM TWEET as t
                                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
@@ -102,8 +132,12 @@ class MainController extends Controller
 
                                
                                 $minutesbefore += $tweettime[0]->minutes_before;
+                                
 
                         }
+
+                        $tweettext = "";
+                		$toptweets = "";
 
                         $average = $minutesbefore / count($gametimes);
 
@@ -111,14 +145,23 @@ class MainController extends Controller
                         $avgminutes = fmod($average, 60);
                 }
 
-        return view('ratings')->withTeam($team)->withSeason($season)->withGame($game)->withAvghours($avghours)->withAvgminutes($avgminutes)->withGametime("")->withTweettime("");
+        return view('ratings')
+        ->withTeam($team)
+        ->withSeason($season)
+        ->withGame($game)
+        ->withAvghours($avghours)
+        ->withAvgminutes($avgminutes)
+        ->withGametime("")
+        ->withTweettime("")
+        ->withTweettext($tweettext)
+        ->withToptweets($toptweets);
     }
 
     public function stats(Request $request) {
 
     	$option = $request->option;
 
-    	return view('ratings')->withOption($option);
+    	return view('stats')->withOption($option);
 
     	/*if ($option == 'tweets') {
 
