@@ -172,7 +172,7 @@ class MainController extends Controller
 	                ORDER BY (retweet_count + favorite_count) DESC
 	                LIMIT 100"));
 
-    		return view('stats')->withOption($option);
+    		return view('stats')->withOption($option)->withResult($result);
     	}
     	else if ($option == 'games') {
     		$teams = DB::select( DB::raw("SELECT
@@ -183,20 +183,20 @@ class MainController extends Controller
 	        foreach($teams as $team) {       
 		        $games = DB::select( DB::raw( "SELECT t1.city_and_name AS team1, t2.city_and_name AS team2, g.game_id AS game_id, g.start_datetime AS start_datetime
 				FROM GAME as g, TEAM as t1, TEAM as t2
-				WHERE t1.team_id = g.away_team and t2.team_id = g.home_team and (t1.team_id=$team OR t2.team_id=$team)"));
+				WHERE t1.team_id = g.away_team and t2.team_id = g.home_team and (t1.team_id=$team->team_id OR t2.team_id=$team->team_id)"));
     			
     			// Add all the games to the result
     			foreach ($games as $game) {
     				array_push($result, $game);
     			}
     		}
-    		return view('stats')->withOption($option);
+    		return view('stats')->withOption($option)->withResult($result);
     	}
     	else { // $option == 'teams'
     		$result = DB::select( DB::raw("SELECT
 	                *
 	                FROM TEAM"));
-    		return view('stats')->withOption($option);
+    		return view('stats')->withOption($option)->withResult($result);
     	}
 
     }

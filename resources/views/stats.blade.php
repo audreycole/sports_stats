@@ -36,7 +36,29 @@
       <hr>
      
       <p> You chose the option {{ $option }}.
+
+    @if ($option == 'tweets')
+        @foreach ($result as $r)
+        <ul class="list-group">
+          <li class="list-group-item">{{ $r->tweet_text }} Popularity: {{ $r->popularity }} </li>
+        </ul>
+        @endforeach
+
+    @elseif ($option == 'games')
+        @foreach ($result as $r)
+        <ul class="list-group">
+          <li class="list-group-item">Team 1: {{ $r->team1 }}  Team 2: {{ $r->team2}} Start: {{ $r->start_datetime }}</li>
+        </ul>
+        @endforeach
+
+    @else
+      @foreach ($result as $r)
+      <ul class="list-group">
+        <li class="list-group-item">Name: {{ $r->city_and_name }} State: {{ $r->state }} Stadium: {{ $r->stadium }}</li>
+      </ul>
+      @endforeach
       
+    @endif
       <br>
 
       
