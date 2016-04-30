@@ -59,7 +59,8 @@ class MainController extends Controller
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
                 /*60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) >= 0 and*/
-                DAY(t.created_at) = $gametime->day
+                DAY(t.created_at) = $gametime->day and 
+                t.game_id = $game
                 ORDER BY (retweet_count + favorite_count) DESC
                 LIMIT 1"));
 
@@ -103,13 +104,15 @@ class MainController extends Controller
 			/* We are currently planning to calculate the average over all teams for the highest tweet visibility by 
 			   using a PHP adaptation on the above query.  
 			*/
-			/* Get all the game times */
+			/* Get all the game times and game_ids */
 			$gametimes = DB::select( DB::raw( "SELECT HOUR(start_datetime) as hour,
                         DAY(start_datetime) as day,
                         MINUTE(start_datetime) as minutes,
-                        MONTH(start_datetime) as month
+                        MONTH(start_datetime) as month, 
+                        game_id
                         FROM GAME 
                         LIMIT 10"));
+
 
 
                         $minutesbefore = 0;
@@ -125,7 +128,8 @@ class MainController extends Controller
                                 FROM TWEET as t
                                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
-                                DAY(t.created_at) = $gametime->day
+                                DAY(t.created_at) = $gametime->day and 
+                                t.game_id = $gametime->game_id
                                 ORDER BY (retweet_count + favorite_count) DESC
                                 LIMIT 1"));
 
