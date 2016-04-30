@@ -45,9 +45,16 @@
       @endif 
 
       @if ($tweettime != "")
-        <h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }} Hours:Minutes Before Game: {{ $hoursbefore }} : {{ $minutesbefore }}</h3>
+        <div class="panel panel-default">
+          <div class="panel-heading"><h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }} Hours:Minutes Before Game: {{ $hoursbefore }} : {{ $minutesbefore }}</h3></div>
+          <div class="panel-body">{{ $tweettext }}</div>
+        </div>
       @else 
-        <h3>Hours:Minutes Before Game: {{ $avghours }}:{{ $avgminutes }} </h3>
+        <div class="panel panel-default">
+          <div class="panel-heading">Average Tweet Time</div>
+          <div class="panel-body"><h3>Hours:Minutes Before Game: {{ $avghours }}:{{ $avgminutes }} </h3></div>
+        </div>
+
       @endif
       <br>
 
@@ -58,6 +65,7 @@
       <ul class="list-group">
         <li class="list-group-item">{{ $tweet->tweet_text }} Popularity: {{ $tweet->popularity }}</li>
       </ul>
+      @endforeach
 
       @endif
       

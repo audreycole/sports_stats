@@ -54,10 +54,11 @@ class MainController extends Controller
                 HOUR(t.created_at) as hour,
                 MINUTE(t.created_at) as minutes,
                 (retweet_count + favorite_count) AS popularity, 
-                tweet_text,
+                tweet_text
                 FROM TWEET as t
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
+                /*60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) >= 0 and*/
                 DAY(t.created_at) = $gametime->day
                 ORDER BY (retweet_count + favorite_count) DESC
                 LIMIT 1"));
@@ -93,9 +94,8 @@ class MainController extends Controller
                 ->withTweettime($tweettime[0])
                 ->withGametime($gametime)
                 ->withHoursbefore($hoursbefore)
-                ->withMinutesbefore($minutesbefore)
-                
-                ->withTweettext($tweettext);
+                ->withMinutesbefore($minutesbefore)   
+                ->withTweettext($tweettext)
                 ->withToptweets($toptweets);
 		}
 		else {
@@ -121,8 +121,7 @@ class MainController extends Controller
                                 60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) AS minutes_before,
                                 HOUR(t.created_at) as hour,
                                 MINUTE(t.created_at) as minutes,
-                                (retweet_count + favorite_count) AS popularity, 
-                                tweet_text
+                                (retweet_count + favorite_count) AS popularity
                                 FROM TWEET as t
                                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
@@ -136,7 +135,6 @@ class MainController extends Controller
 
                         }
 
-                        $tweettext = "";
                 		$toptweets = "";
 
                         $average = $minutesbefore / count($gametimes);
@@ -153,7 +151,6 @@ class MainController extends Controller
         ->withAvgminutes($avgminutes)
         ->withGametime("")
         ->withTweettime("")
-        ->withTweettext($tweettext)
         ->withToptweets($toptweets);
     }
 
@@ -161,18 +158,47 @@ class MainController extends Controller
 
     	$option = $request->option;
 
-    	return view('stats')->withOption($option);
 
-    	/*if ($option == 'tweets') {
+    	// Get the top 100 tweets 
+    	if ($option == 'tweets') {
+    		$result = DB::select( DB::raw("SELECT
+	                HOUR(t.created_at) as hour,
+	                MINUTE(t.created_at) as minutes,
+	                DAY(t.created_at) as day,
+	                MONTH(t.created_at) as month,
+	                (retweet_count + favorite_count) AS popularity, 
+	                tweet_text
+	                FROM TWEET as t
+	                ORDER BY (retweet_count + favorite_count) DESC
+	                LIMIT 100"));
 
+    		return view('stats')->withOption($option);
     	}
     	else if ($option == 'games') {
-
+    		$teams = DB::select( DB::raw("SELECT
+	                team_id
+	                FROM TEAM"));
+	        $result = Array();
+	        
+	        foreach($teams as $team) {       
+		        $games = DB::select( DB::raw( "SELECT t1.city_and_name AS team1, t2.city_and_name AS team2, g.game_id AS game_id, g.start_datetime AS start_datetime
+				FROM GAME as g, TEAM as t1, TEAM as t2
+				WHERE t1.team_id = g.away_team and t2.team_id = g.home_team and (t1.team_id=$team OR t2.team_id=$team)"));
+    			
+    			// Add all the games to the result
+    			foreach ($games as $game) {
+    				array_push($result, $game);
+    			}
+    		}
+    		return view('stats')->withOption($option);
     	}
     	else { // $option == 'teams'
+    		$result = DB::select( DB::raw("SELECT
+	                *
+	                FROM TEAM"));
+    		return view('stats')->withOption($option);
+    	}
 
-    	}*/
-		
     }
 
     // Update the home page drop down options
