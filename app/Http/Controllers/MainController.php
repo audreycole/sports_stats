@@ -82,13 +82,41 @@ class MainController extends Controller
 			LIMIT 100"));
 
 			$numberoftweets = \Lava::DataTable();
-           	$numberoftweets->addStringColumn('Hour(s) Before Game')
-		      ->addNumberColumn('Number of Tweets')
-		      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num])
-		      ->addRow([$numtweets[1]->hour,  $numtweets[1]->num])
-		      ->addRow([$numtweets[2]->hour,  $numtweets[2]->num])
-		      ->addRow([$numtweets[3]->hour,  $numtweets[3]->num])
-		      ->addRow([$numtweets[4]->hour,  $numtweets[4]->num]);
+			if(count($numtweets) == 5) {
+	           	$numberoftweets->addStringColumn('Hour(s) Before Game')
+			      ->addNumberColumn('Number of Tweets')
+			      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num])
+			      ->addRow([$numtweets[1]->hour,  $numtweets[1]->num])
+			      ->addRow([$numtweets[2]->hour,  $numtweets[2]->num])
+			      ->addRow([$numtweets[3]->hour,  $numtweets[3]->num])
+			      ->addRow([$numtweets[4]->hour,  $numtweets[4]->num]);
+			}
+			else if (count($numtweets) == 4) {
+				$numberoftweets->addStringColumn('Hour(s) Before Game')
+			      ->addNumberColumn('Number of Tweets')
+			      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num])
+			      ->addRow([$numtweets[1]->hour,  $numtweets[1]->num])
+			      ->addRow([$numtweets[2]->hour,  $numtweets[2]->num])
+			      ->addRow([$numtweets[3]->hour,  $numtweets[3]->num]);
+			}
+			else if (count($numtweets) == 3) {
+				$numberoftweets->addStringColumn('Hour(s) Before Game')
+			      ->addNumberColumn('Number of Tweets')
+			      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num])
+			      ->addRow([$numtweets[1]->hour,  $numtweets[1]->num])
+			      ->addRow([$numtweets[2]->hour,  $numtweets[2]->num]);
+			}
+			else if (count($numtweets) == 2) {
+				$numberoftweets->addStringColumn('Hour(s) Before Game')
+			      ->addNumberColumn('Number of Tweets')
+			      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num])
+			      ->addRow([$numtweets[1]->hour,  $numtweets[1]->num]);
+			}
+			else {
+				$numberoftweets->addStringColumn('Hour(s) Before Game')
+			      ->addNumberColumn('Number of Tweets')
+			      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num]);
+			}
 
 		    \Lava::BarChart('Number of Tweets', $numberoftweets);
 
