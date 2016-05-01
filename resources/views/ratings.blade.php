@@ -37,7 +37,7 @@
 
       @if ($tweettime != "")
         <div class="panel panel-default">
-          <div class="panel-heading"><h3>Time: {{ $tweettime->hour }}:{{ $tweettime->minutes }} Popularity: {{ $tweettime->popularity }} Hours:Minutes Before Game: {{ $hoursbefore }} : {{ $minutesbefore }}</h3></div>
+          <div class="panel-heading"><h3>Hours:Minutes Before Game: {{ $hoursbefore }} : {{ $minutesbefore }}</h3></div>
           <div class="panel-body">{{ $tweettext }}</div>
         </div>
       @else 
