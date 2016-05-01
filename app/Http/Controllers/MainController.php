@@ -93,8 +93,8 @@ class MainController extends Controller
 			WHERE ($gametime->hour-HOUR(t.created_at)) <= 5 and 
 			($gametime->hour-HOUR(t.created_at)) >= 0 and 
 			DAY(t.created_at) = $gametime->day 
-			GROUP BY HOUR(t.created_at) 
-			ORDER BY HOUR(t.created_at)
+			GROUP BY $gametime->hour-HOUR(t.created_at)
+			ORDER BY $gametime->hour-HOUR(t.created_at)
 			LIMIT 100"));
 
 			$numberoftweets = \Lava::DataTable();
