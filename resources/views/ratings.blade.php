@@ -58,6 +58,13 @@
       @endif
       <br>
 
+      @if ($numberoftweets != "")
+
+        <div id="poll_div"></div>
+        <?= $lava->render('BarChart', 'Food Poll', 'poll_div') ?>
+
+      @endif
+
       @if ($toptweets != "")
 
       @foreach ($toptweets as $tweet)
