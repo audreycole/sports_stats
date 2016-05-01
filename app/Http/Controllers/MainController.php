@@ -72,7 +72,7 @@ class MainController extends Controller
 
             /* Get the number of tweets each hour before the game within 5 hour range */
             $numtweets = DB::select( DB::raw("SELECT 
-            HOUR(t.created_at), COUNT(*)
+            HOUR(t.created_at) as hour, COUNT(*) as num
 			from TWEET as t 
 			WHERE ($gametime->hour-HOUR(t.created_at)) <= 5 and 
 			($gametime->hour-HOUR(t.created_at)) >= 0 and 
@@ -81,16 +81,16 @@ class MainController extends Controller
 			ORDER BY HOUR(t.created_at)
 			LIMIT 100"));
 
-			$numberoftweets = Lava::DataTable();
-           	$numberoftweets->addStringColumn('Food Poll')
-		      ->addNumberColumn('Votes')
-		      ->addRow(['Tacos',  rand(1000,5000)])
-		      ->addRow(['Salad',  rand(1000,5000)])
-		      ->addRow(['Pizza',  rand(1000,5000)])
-		      ->addRow(['Apples', rand(1000,5000)])
-		      ->addRow(['Fish',   rand(1000,5000)]);
+			$numberoftweets = \Lava::DataTable();
+           	$numberoftweets->addStringColumn('Hour(s) Before Game')
+		      ->addNumberColumn('Number of Tweets')
+		      ->addRow([$numtweets[0]->hour,  $numtweets[0]->num])
+		      ->addRow([$numtweets[1]->hour,  $numtweets[1]->num])
+		      ->addRow([$numtweets[2]->hour,  $numtweets[2]->num])
+		      ->addRow([$numtweets[3]->hour,  $numtweets[3]->num])
+		      ->addRow([$numtweets[4]->hour,  $numtweets[4]->num]);
 
-		    Lava::BarChart('Votes', $numberoftweets);
+		    \Lava::BarChart('Number of Tweets', $numberoftweets);
 
 
             // Get the top 100 tweets for that game
@@ -121,7 +121,7 @@ class MainController extends Controller
             ->withHoursbefore($hoursbefore)
             ->withMinutesbefore($minutesbefore)   
             ->withTweettext($tweettext)
-            ->withToptweets($toptweets);
+            ->withToptweets($toptweets)
             ->withNumberoftweets($numberoftweets);
 		}
 		else {
@@ -180,7 +180,7 @@ class MainController extends Controller
         ->withAvgminutes($avgminutes)
         ->withGametime("")
         ->withTweettime("")
-        ->withToptweets($toptweets);
+        ->withToptweets($toptweets)
         ->withNumberoftweets("");
     }
 

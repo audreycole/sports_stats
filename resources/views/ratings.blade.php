@@ -61,7 +61,7 @@
       @if ($numberoftweets != "")
 
         <div id="poll_div"></div>
-        <?= $lava->render('BarChart', 'Food Poll', 'poll_div') ?>
+        <?= Lava::render('BarChart', 'Number of Tweets', 'poll_div') ?>
 
       @endif
 
