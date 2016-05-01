@@ -34,15 +34,6 @@
       <p>Welcome to your source of twitter stats during the NBA 2016!</p>
 
       <hr>
-      @if ($gametime != "")
-
-      <p> You chose the team {{ $team }}, the season {{ $season }}, and the game {{ $game }} with date {{ $gametime->month }}-{{ $gametime->day }} and time {{ $gametime->hour }}:{{ $gametime->minutes }}. </p>
-
-      @else 
-
-      <p> You chose to calculate the best time to tweet before any game during the 2016 season </p>
-
-      @endif 
 
       @if ($tweettime != "")
         <div class="panel panel-default">

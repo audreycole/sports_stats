@@ -66,7 +66,6 @@ class MainController extends Controller
             LIMIT 1"));
 
             if(!$tweettime) {
-
             	$tweettime = DB::select( DB::raw("SELECT 
 	            60*($gametime->hour-HOUR(t.created_at)) + ($gametime->minutes-MINUTE(t.created_at)) AS minutes_before, 
 	            HOUR(t.created_at) as hour,
@@ -156,10 +155,21 @@ class MainController extends Controller
             
             }
 
+            /* Get the actual name for the game and team */
+            $teamname = DB::select( DB::raw( "SELECT city_and_name
+            FROM TEAM
+            WHERE team_id = $team"));
+
+            $gamename = DB::select( DB::raw( "SELECT g.start_datetime,
+            	t1.city_and_name AS team1, t1.city_and_name AS team2
+            FROM GAME AS g, TEAM AS t1, TEAM AS t2
+            WHERE game_id = $game AND t1.team_id = g.away_team AND t2.team_id = g.home_team")); 
+
+       
             return view('ratings')
-            ->withTeam($team)
+            ->withTeamname($teamname)
             ->withSeason($season)
-            ->withGame($game)
+            ->withGamename($gamename)
             ->withTweettime($tweettime[0])
             ->withGametime($gametime)
             ->withHoursbefore($hoursbefore)
