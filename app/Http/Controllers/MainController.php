@@ -88,7 +88,7 @@ class MainController extends Controller
 
             /* Get the number of tweets each hour before the game within 5 hour range */
             $numtweets = DB::select( DB::raw("SELECT 
-            HOUR(t.created_at) as hour, COUNT(*) as num
+            ($gametime->hour-HOUR(t.created_at)) as hours_before, COUNT(*) as num
 			from TWEET as t 
 			WHERE ($gametime->hour-HOUR(t.created_at)) <= 5 and 
 			($gametime->hour-HOUR(t.created_at)) >= 0 and 
@@ -101,37 +101,37 @@ class MainController extends Controller
 			if(count($numtweets) == 5) {
 	           	$numberoftweets->addStringColumn('Hour(s) Before Game')
 			      ->addNumberColumn('Number of Tweets')
-			      ->addRow(["Hour: " . $numtweets[0]->hour,  $numtweets[0]->num])
-			      ->addRow(["Hour: " . $numtweets[1]->hour,  $numtweets[1]->num])
-			      ->addRow(["Hour: " . $numtweets[2]->hour,  $numtweets[2]->num])
-			      ->addRow(["Hour: " . $numtweets[3]->hour,  $numtweets[3]->num])
-			      ->addRow(["Hour: " . $numtweets[4]->hour,  $numtweets[4]->num]);
+			      ->addRow(["Hour: " . $numtweets[0]->hours_before,  $numtweets[0]->num])
+			      ->addRow(["Hour: " . $numtweets[1]->hours_before,  $numtweets[1]->num])
+			      ->addRow(["Hour: " . $numtweets[2]->hours_before,  $numtweets[2]->num])
+			      ->addRow(["Hour: " . $numtweets[3]->hours_before,  $numtweets[3]->num])
+			      ->addRow(["Hour: " . $numtweets[4]->hours_before,  $numtweets[4]->num]);
 			}
 			else if (count($numtweets) == 4) {
 				$numberoftweets->addStringColumn('Hour(s) Before Game')
 			      ->addNumberColumn('Number of Tweets')
-			      ->addRow(["Hour: " . $numtweets[0]->hour,  $numtweets[0]->num])
-			      ->addRow(["Hour: " . $numtweets[1]->hour,  $numtweets[1]->num])
-			      ->addRow(["Hour: " . $numtweets[2]->hour,  $numtweets[2]->num])
-			      ->addRow(["Hour: " . $numtweets[3]->hour,  $numtweets[3]->num]);
+			      ->addRow(["Hour: " . $numtweets[0]->hours_before,  $numtweets[0]->num])
+			      ->addRow(["Hour: " . $numtweets[1]->hours_before,  $numtweets[1]->num])
+			      ->addRow(["Hour: " . $numtweets[2]->hours_before,  $numtweets[2]->num])
+			      ->addRow(["Hour: " . $numtweets[3]->hours_before,  $numtweets[3]->num]);
 			}
 			else if (count($numtweets) == 3) {
 				$numberoftweets->addStringColumn('Hour(s) Before Game')
 			      ->addNumberColumn('Number of Tweets')
-			      ->addRow(["Hour: " . $numtweets[0]->hour,  $numtweets[0]->num])
-			      ->addRow(["Hour: " . $numtweets[1]->hour,  $numtweets[1]->num])
-			      ->addRow(["Hour: " . $numtweets[2]->hour,  $numtweets[2]->num]);
+			      ->addRow(["Hour: " . $numtweets[0]->hours_before,  $numtweets[0]->num])
+			      ->addRow(["Hour: " . $numtweets[1]->hours_before,  $numtweets[1]->num])
+			      ->addRow(["Hour: " . $numtweets[2]->hours_before,  $numtweets[2]->num]);
 			}
 			else if (count($numtweets) == 2) {
 				$numberoftweets->addStringColumn('Hour(s) Before Game')
 			      ->addNumberColumn('Number of Tweets')
-			      ->addRow(["Hour: " . $numtweets[0]->hour,  $numtweets[0]->num])
-			      ->addRow(["Hour: " . $numtweets[1]->hour,  $numtweets[1]->num]);
+			      ->addRow(["Hour: " . $numtweets[0]->hours_before,  $numtweets[0]->num])
+			      ->addRow(["Hour: " . $numtweets[1]->hours_before,  $numtweets[1]->num]);
 			}
 			else {
 				$numberoftweets->addStringColumn('Hour(s) Before Game')
 			      ->addNumberColumn('Number of Tweets')
-			      ->addRow(["Hour: " . $numtweets[0]->hour,  $numtweets[0]->num]);
+			      ->addRow(["Hour: " . $numtweets[0]->hours_before,  $numtweets[0]->num]);
 			}
 
 		    \Lava::BarChart('Number of Tweets', $numberoftweets);
