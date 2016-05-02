@@ -58,7 +58,7 @@ class MainController extends Controller
             (retweet_count + favorite_count) AS popularity, 
             tweet_text, 
             screen_name
-            FROM TWEET as t, USER as u
+            FROM TWEET as t, USERS as u
             WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
             ($gametime->hour - HOUR(t.created_at)) >= 0 and
             DAY(t.created_at) = $gametime->day and 
@@ -75,7 +75,7 @@ class MainController extends Controller
 	            (retweet_count + favorite_count) AS popularity, 
 	            tweet_text, 
                 screen_name
-	            FROM TWEET as t, USER as u
+	            FROM TWEET as t, USERS as u
 	            WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
 	            ($gametime->hour - HOUR(t.created_at)) >= 0 and
 	            DAY(t.created_at) = $gametime->day and 
@@ -165,7 +165,7 @@ class MainController extends Controller
                 (retweet_count + favorite_count) AS popularity, 
                 tweet_text, 
                 screen_name
-                FROM TWEET as t, USER as u
+                FROM TWEET as t, USERS as u
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
                 u.user_id_str = t.user_id_str and
@@ -263,14 +263,14 @@ class MainController extends Controller
     	// Get the top 100 tweets 
     	if ($option == 'tweets') {
     		$result = DB::select( DB::raw("SELECT
-	                screen_name
                     HOUR(t.created_at) as hour,
 	                MINUTE(t.created_at) as minutes,
 	                DAY(t.created_at) as day,
 	                MONTH(t.created_at) as month,
 	                (retweet_count + favorite_count) AS popularity, 
-	                tweet_text
-	                FROM TWEET as t, USER as u
+	                tweet_text,
+                    screen_name
+	                FROM TWEET as t, USERS as u
                     WHERE u.user_id_str = t.user_id_str
 	                ORDER BY (retweet_count + favorite_count) DESC
 	                LIMIT 100"));
