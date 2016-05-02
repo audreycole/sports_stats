@@ -96,10 +96,24 @@ class MainController extends Controller
 			from TWEET as t 
 			WHERE ($gametime->hour-HOUR(t.created_at)) <= 5 and 
 			($gametime->hour-HOUR(t.created_at)) >= 0 and 
-			DAY(t.created_at) = $gametime->day 
+			DAY(t.created_at) = $gametime->day and 
+            t.game_id = $game
 			GROUP BY $gametime->hour-HOUR(t.created_at)
 			ORDER BY $gametime->hour-HOUR(t.created_at)
 			LIMIT 100"));
+
+            if(!$numtweets) {
+                $numtweets = DB::select( DB::raw("SELECT 
+                ($gametime->hour-HOUR(t.created_at)) as hours_before, COUNT(*) as num
+                from TWEET as t 
+                WHERE ($gametime->hour-HOUR(t.created_at)) <= 5 and 
+                ($gametime->hour-HOUR(t.created_at)) >= 0 and 
+                DAY(t.created_at) = $gametime->day 
+                GROUP BY $gametime->hour-HOUR(t.created_at)
+                ORDER BY $gametime->hour-HOUR(t.created_at)
+                LIMIT 100"));
+
+            }
 
 			$numberoftweets = \Lava::DataTable();
 			if(count($numtweets) == 5) {
@@ -198,8 +212,6 @@ class MainController extends Controller
                         FROM GAME 
                         LIMIT 10"));
 
-
-
                         $minutesbefore = 0;
 
                         foreach($gametimes as $gametime) {
@@ -219,8 +231,7 @@ class MainController extends Controller
                                 LIMIT 1"));
 
                                
-                                $minutesbefore += $tweettime[0]->minutes_before;
-                                
+                                $minutesbefore += $tweettime[0]->minutes_before;              
 
                         }
 
