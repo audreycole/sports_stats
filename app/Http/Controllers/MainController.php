@@ -99,8 +99,7 @@ class MainController extends Controller
 			DAY(t.created_at) = $gametime->day and 
             t.game_id = $game
 			GROUP BY $gametime->hour-HOUR(t.created_at)
-			ORDER BY $gametime->hour-HOUR(t.created_at)
-			LIMIT 100"));
+			ORDER BY $gametime->hour-HOUR(t.created_at)"));
 
             if(!$numtweets) {
                 $numtweets = DB::select( DB::raw("SELECT 
@@ -110,8 +109,7 @@ class MainController extends Controller
                 ($gametime->hour-HOUR(t.created_at)) >= 0 and 
                 DAY(t.created_at) = $gametime->day 
                 GROUP BY $gametime->hour-HOUR(t.created_at)
-                ORDER BY $gametime->hour-HOUR(t.created_at)
-                LIMIT 100"));
+                ORDER BY $gametime->hour-HOUR(t.created_at)"));
 
             }
 
@@ -163,12 +161,10 @@ class MainController extends Controller
                 HOUR(t.created_at) as hour,
                 MINUTE(t.created_at) as minutes,
                 (retweet_count + favorite_count) AS popularity, 
-                tweet_text, 
-                screen_name
-                FROM TWEET as t, USERS as u
+                tweet_text
+                FROM TWEET as t
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
-                u.user_id_str = t.user_id_str and
                 DAY(t.created_at) = $gametime->day
                 ORDER BY (retweet_count + favorite_count) DESC
                 LIMIT 100"));
@@ -268,10 +264,8 @@ class MainController extends Controller
 	                DAY(t.created_at) as day,
 	                MONTH(t.created_at) as month,
 	                (retweet_count + favorite_count) AS popularity, 
-	                tweet_text,
-                    screen_name
-	                FROM TWEET as t, USERS as u
-                    WHERE u.user_id_str = t.user_id_str
+	                tweet_text
+	                FROM TWEET as t
 	                ORDER BY (retweet_count + favorite_count) DESC
 	                LIMIT 100"));
 

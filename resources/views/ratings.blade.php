@@ -61,7 +61,7 @@
       @foreach ($toptweets as $tweet)
 
       <ul class="list-group">
-        <li class="list-group-item">User: {{ $tweet->screen_name }} Text: {{ $tweet->tweet_text }} Popularity: {{ $tweet->popularity }}</li>
+        <li class="list-group-item">Text: {{ $tweet->tweet_text }} Popularity: {{ $tweet->popularity }}</li>
       </ul>
       @endforeach
 
