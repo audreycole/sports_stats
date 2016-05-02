@@ -38,7 +38,7 @@
     @if ($option == 'tweets')
         @foreach ($result as $r)
         <ul class="list-group">
-          <li class="list-group-item">{{ $r->tweet_text }} Popularity: {{ $r->popularity }} </li>
+          <li class="list-group-item">User: {{ $r->screen_name }} Text: {{ $r->tweet_text }} Popularity: {{ $r->popularity }} </li>
         </ul>
         @endforeach
 

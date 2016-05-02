@@ -38,7 +38,7 @@
       @if ($tweettime != "")
         <div class="panel panel-default">
           <div class="panel-heading"><h3>Hours:Minutes Before Game: {{ $hoursbefore }} : {{ $minutesbefore }}</h3></div>
-          <div class="panel-body">{{ $tweettext }}</div>
+          <div class="panel-body">User: {{$username}} Text: {{ $tweettext }}</div>
         </div>
       @else 
         <div class="panel panel-default">
@@ -61,7 +61,7 @@
       @foreach ($toptweets as $tweet)
 
       <ul class="list-group">
-        <li class="list-group-item">{{ $tweet->tweet_text }} Popularity: {{ $tweet->popularity }}</li>
+        <li class="list-group-item">User: {{ $tweet->screen_name }} Text: {{ $tweet->tweet_text }} Popularity: {{ $tweet->popularity }}</li>
       </ul>
       @endforeach
 

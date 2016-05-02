@@ -56,12 +56,14 @@ class MainController extends Controller
             HOUR(t.created_at) as hour,
             MINUTE(t.created_at) as minutes,
             (retweet_count + favorite_count) AS popularity, 
-            tweet_text
-            FROM TWEET as t
+            tweet_text, 
+            screen_name
+            FROM TWEET as t, USER as u
             WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
             ($gametime->hour - HOUR(t.created_at)) >= 0 and
             DAY(t.created_at) = $gametime->day and 
-            t.game_id = $game
+            t.game_id = $game and 
+            u.user_id_str = t.user_id_str
             ORDER BY (retweet_count + favorite_count) DESC
             LIMIT 1"));
 
@@ -71,11 +73,13 @@ class MainController extends Controller
 	            HOUR(t.created_at) as hour,
 	            MINUTE(t.created_at) as minutes,
 	            (retweet_count + favorite_count) AS popularity, 
-	            tweet_text
-	            FROM TWEET as t
+	            tweet_text, 
+                screen_name
+	            FROM TWEET as t, USER as u
 	            WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
 	            ($gametime->hour - HOUR(t.created_at)) >= 0 and
-	            DAY(t.created_at) = $gametime->day  
+	            DAY(t.created_at) = $gametime->day and 
+                u.user_id_str = t.user_id_str
 	            ORDER BY (retweet_count + favorite_count) DESC
 	            LIMIT 1"));
             }
@@ -84,6 +88,7 @@ class MainController extends Controller
             $minutesbefore = fmod($tweettime[0]->minutes_before, 60);
             $tweettext = $tweettime[0]->tweet_text;
             $toptweets = "";
+            $username = $tweettime[0]->screen_name;
 
             /* Get the number of tweets each hour before the game within 5 hour range */
             $numtweets = DB::select( DB::raw("SELECT 
@@ -144,15 +149,15 @@ class MainController extends Controller
                 HOUR(t.created_at) as hour,
                 MINUTE(t.created_at) as minutes,
                 (retweet_count + favorite_count) AS popularity, 
-                tweet_text
-                FROM TWEET as t
+                tweet_text, 
+                screen_name
+                FROM TWEET as t, USER as u
                 WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
                 ($gametime->hour - HOUR(t.created_at)) >= 0 and
+                u.user_id_str = t.user_id_str and
                 DAY(t.created_at) = $gametime->day
                 ORDER BY (retweet_count + favorite_count) DESC
                 LIMIT 100"));
-
-            
             }
 
             /* Get the actual name for the game and team */
@@ -176,7 +181,8 @@ class MainController extends Controller
             ->withMinutesbefore($minutesbefore)   
             ->withTweettext($tweettext)
             ->withToptweets($toptweets)
-            ->withNumberoftweets($numberoftweets);
+            ->withNumberoftweets($numberoftweets)
+            ->withUsername($username);
 		}
 		else {
 
@@ -246,13 +252,15 @@ class MainController extends Controller
     	// Get the top 100 tweets 
     	if ($option == 'tweets') {
     		$result = DB::select( DB::raw("SELECT
-	                HOUR(t.created_at) as hour,
+	                screen_name
+                    HOUR(t.created_at) as hour,
 	                MINUTE(t.created_at) as minutes,
 	                DAY(t.created_at) as day,
 	                MONTH(t.created_at) as month,
 	                (retweet_count + favorite_count) AS popularity, 
 	                tweet_text
-	                FROM TWEET as t
+	                FROM TWEET as t, USER as u
+                    WHERE u.user_id_str = t.user_id_str
 	                ORDER BY (retweet_count + favorite_count) DESC
 	                LIMIT 100"));
 
