@@ -56,14 +56,12 @@ class MainController extends Controller
             HOUR(t.created_at) as hour,
             MINUTE(t.created_at) as minutes,
             (retweet_count + favorite_count) AS popularity, 
-            tweet_text, 
-            screen_name
-            FROM TWEET as t, USERS as u
+            tweet_text
+            FROM TWEET as t
             WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
             ($gametime->hour - HOUR(t.created_at)) >= 0 and
             DAY(t.created_at) = $gametime->day and 
-            t.game_id = $game and 
-            u.user_id_str = t.user_id_str
+            t.game_id = $game 
             ORDER BY (retweet_count + favorite_count) DESC
             LIMIT 1"));
 
@@ -73,13 +71,11 @@ class MainController extends Controller
 	            HOUR(t.created_at) as hour,
 	            MINUTE(t.created_at) as minutes,
 	            (retweet_count + favorite_count) AS popularity, 
-	            tweet_text, 
-                screen_name
-	            FROM TWEET as t, USERS as u
+	            tweet_text
+	            FROM TWEET as t
 	            WHERE ($gametime->hour - HOUR(t.created_at)) <= 5 and
 	            ($gametime->hour - HOUR(t.created_at)) >= 0 and
 	            DAY(t.created_at) = $gametime->day and 
-                u.user_id_str = t.user_id_str
 	            ORDER BY (retweet_count + favorite_count) DESC
 	            LIMIT 1"));
             }
